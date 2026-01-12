@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Babybio - Tết Vui, Tết Ấm 2026</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="assets/images/logo.png" type="image/png">
+</head>
+<body>
+
+    <div id="app-background"></div>
+
+    <div id="app">
+        <header>
+            <img src="assets/images/logo.png" alt="Babybio Logo" class="logo">
+        </header>
+
+        <main>
+            <!-- Screen 1: Welcome -->
+            <section id="screen-welcome" class="screen active">
+                <div class="welcome-visual" style="text-align: center; margin-bottom: 20px;">
+                    <img src="assets/images/mascot.png" alt="Babybio Horse" style="width: 150px; height: auto;">
+                </div>
+                <h1 style="text-align: center; color: var(--color-primary-red); margin-bottom: 10px;">Tết Vui, Tết Ấm</h1>
+                <p style="text-align: center; margin-bottom: 30px;">Cùng Babybio rinh quà may mắn đầu xuân!</p>
+                <button id="btn-start" class="btn-primary">Bắt đầu ngay</button>
+            </section>
+
+            <!-- Screen 2: Registration Form -->
+            <section id="screen-form" class="screen">
+                <h2 style="color: var(--color-primary-red); margin-bottom: 20px;">Thông tin tham gia</h2>
+                
+                <form id="entry-form">
+                    <div class="form-group">
+                        <label class="form-label">Họ và Tên *</label>
+                        <input type="text" id="fullname" class="form-input" placeholder="Nhập họ tên của bạn" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Số điện thoại *</label>
+                        <input type="tel" id="phone" class="form-input" placeholder="Nhập số điện thoại" pattern="[0-9]{10}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Cửa hàng mua *</label>
+                        <select id="store" class="form-select" required>
+                            <option value="">-- Chọn cửa hàng --</option>
+                            <option value="KidsPlaza">KidsPlaza</option>
+                            <option value="ConCung">Con Cưng</option>
+                            <option value="Bibomart">Bibomart</option>
+                            <option value="Other">Cửa hàng khác</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Sản phẩm đã mua *</label>
+                        <select id="product" class="form-select" required>
+                            <option value="cow">Sữa bò Babybio</option>
+                            <option value="goat">Sữa dê Babybio</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Mã hóa đơn *</label>
+                        <input type="text" id="invoice" class="form-input" placeholder="Nhập số hóa đơn" required>
+                        <small style="color: #666; font-size: 0.8rem;">Mỗi hóa đơn chỉ được tham gia 1 lần.</small>
+                    </div>
+
+                    <div class="form-group" style="display: flex; align-items: start; gap: 8px;">
+                        <input type="checkbox" id="terms" required style="margin-top: 4px;">
+                        <label for="terms" style="font-size: 0.9rem;">Tôi đồng ý với thể lệ chương trình.</label>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="width: 100%;">Xác nhận & Quay</button>
+                </form>
+            </section>
+
+            <!-- Screen 3: Game -->
+            <section id="screen-game" class="screen">
+                <div id="horse-container">
+                    <img src="assets/images/mascot.png" id="mascot-img" alt="Lucky Horse">
+                </div>
+                <h3 style="text-align: center; color: var(--color-primary-red); margin-bottom: 10px;">Tung Lì Xì!</h3>
+                <p style="text-align: center;">Chạm vào bao lì xì để nhận quà!</p>
+                
+                <!-- Falling items container -->
+                <div id="envelopes-sky"></div>
+            </section>
+
+            <!-- Screen 4: Result -->
+            <section id="screen-result" class="screen">
+                <div class="result-card">
+                    <h2 style="color: var(--color-primary-red); margin-bottom: 10px;">CHÚC MỪNG!</h2>
+                    <p>Bạn đã nhận được:</p>
+                    
+                    <img id="prize-img" src="" alt="Prize" class="prize-image">
+                    <h3 id="prize-name" style="margin-bottom: 10px;">Prize Name</h3>
+                    
+                    <p>Mã dự thưởng của bạn:</p>
+                    <div id="prize-code" class="prize-code">BB-TET-XXXXXX</div>
+                    
+                    <p style="font-size: 0.8rem; margin-top: 10px; color: #666;">
+                        Vui lòng chụp lại màn hình để đối soát khi nhận quà.
+                    </p>
+                </div>
+                <button id="btn-home" class="btn-secondary">Về trang chủ</button>
+            </section>
+
+        </main>
+
+        <footer>
+            <p>Babybio – Tình yêu, trách nhiệm và sự tử tế</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+</body>
+</html>
