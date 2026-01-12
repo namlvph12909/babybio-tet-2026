@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Babybio Tết 2026</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        #app {
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        h1 {
+            color: var(--color-primary-red);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--color-babybio-pink), #ec407a);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-card.green {
+            background: linear-gradient(135deg, var(--color-babybio-green), #558b2f);
+        }
+
+        .stat-card.gold {
+            background: linear-gradient(135deg, #FFD54F, #FF8F00);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: var(--color-primary-red);
+            color: white;
+        }
+
+        tr:hover {
+            background: #fff5f5;
+        }
+
+        .prize-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .prize-badge.voucher {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .prize-badge.gift {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+
+        .inventory-section {
+            margin-top: 40px;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .inventory-item {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .inventory-item h4 {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .inventory-bar {
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .inventory-bar-fill {
+            height: 100%;
+            background: var(--color-babybio-green);
+            transition: width 0.3s;
+        }
+
+        .inventory-bar-fill.low {
+            background: #ff9800;
+        }
+
+        .inventory-bar-fill.critical {
+            background: #f44336;
+        }
+
+        .qr-section {
+            margin-top: 40px;
+            text-align: center;
+            padding: 30px;
+            background: #f9f9f9;
+            border-radius: 12px;
+        }
+
+        #campaign-qr {
+            margin: 20px auto;
+        }
+
+        .refresh-btn {
+            background: var(--color-babybio-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .refresh-btn:hover {
+            opacity: 0.9;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>
+            <img src="assets/images/logo.png" alt="Babybio" style="height: 50px;">
+            Admin Dashboard - Tết Vui, Tết Ấm 2026
+        </h1>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="total-participants">0</div>
+                <div class="stat-label">Tổng người tham gia</div>
+            </div>
+            <div class="stat-card green">
+                <div class="stat-number" id="total-prizes-given">0</div>
+                <div class="stat-label">Quà đã phát</div>
+            </div>
+            <div class="stat-card gold">
+                <div class="stat-number" id="total-prizes-remaining">500</div>
+                <div class="stat-label">Quà còn lại</div>
+            </div>
+        </div>
+
+        <!-- Inventory Section -->
+        <div class="inventory-section">
+            <h2>📦 Kho quà tặng</h2>
+            <div class="inventory-grid" id="inventory-grid">
+                <div class="loading">Đang tải...</div>
+            </div>
+        </div>
+
+        <!-- Participants Table -->
+        <div style="margin-top: 40px;">
+            <h2>👥 Danh sách người trúng thưởng</h2>
+            <button class="refresh-btn" onclick="loadData()">🔄 Làm mới dữ liệu</button>
+
+            <div style="overflow-x: auto;">
+                <table id="participants-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Mã dự thưởng</th>
+                            <th>Họ tên</th>
+                            <th>SĐT</th>
+                            <th>Cửa hàng</th>
+                            <th>Quà tặng</th>
+                            <th>Thời gian</th>
+                        </tr>
+                    </thead>
+                    <tbody id="participants-body">
+                        <tr>
+                            <td colspan="7" class="loading">Đang tải...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- QR Code Section -->
+        <div class="qr-section">
+            <h2>📱 QR Code Chương trình</h2>
+            <p>In và dán QR này tại các cửa hàng phân phối</p>
+            <div id="campaign-qr"></div>
+            <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">
+                URL: <span id="campaign-url"></span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/database.js"></script>
+    <script>
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            window.DB.init();
+            await loadData();
+            generateCampaignQR();
+        });
+
+        async function loadData() {
+            try {
+                // Load tickets
+                const tickets = await window.DB.getAllTickets();
+                renderParticipants(tickets);
+
+                // Load inventory
+                const inventory = await window.DB.getPrizeInventory();
+                renderInventory(inventory);
+
+                // Update stats
+                document.getElementById('total-participants').textContent = tickets.length;
+
+                let totalGiven = 0;
+                let totalRemaining = 0;
+                Object.values(inventory).forEach(prize => {
+                    totalGiven += (prize.total - prize.remaining);
+                    totalRemaining += prize.remaining;
+                });
+
+                document.getElementById('total-prizes-given').textContent = totalGiven;
+                document.getElementById('total-prizes-remaining').textContent = totalRemaining;
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+        function renderParticipants(tickets) {
+            const tbody = document.getElementById('participants-body');
+
+            if (tickets.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 40px; color: #666;">Chưa có người tham gia</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = tickets.map((t, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td><strong>${t.code}</strong></td>
+                    <td>${t.userName || '-'}</td>
+                    <td>${t.userPhone || '-'}</td>
+                    <td>${t.store || '-'}</td>
+                    <td>
+                        <span class="prize-badge ${t.prizeId?.startsWith('v') ? 'voucher' : 'gift'}">
+                            ${t.prizeName || '-'}
+                        </span>
+                    </td>
+                    <td>${formatDate(t.createdAt)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderInventory(inventory) {
+            const grid = document.getElementById('inventory-grid');
+
+            grid.innerHTML = Object.entries(inventory).map(([id, prize]) => {
+                const percent = (prize.remaining / prize.total) * 100;
+                let barClass = '';
+                if (percent < 20) barClass = 'critical';
+                else if (percent < 50) barClass = 'low';
+
+                return `
+                    <div class="inventory-item">
+                        <h4>${prize.name}</h4>
+                        <div class="inventory-bar">
+                            <div class="inventory-bar-fill ${barClass}" style="width: ${percent}%"></div>
+                        </div>
+                        <div><strong>${prize.remaining}</strong> / ${prize.total}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            try {
+                const date = new Date(dateStr);
+                return date.toLocaleString('vi-VN');
+            } catch {
+                return dateStr;
+            }
+        }
+
+        function generateCampaignQR() {
+            const campaignUrl = window.location.href.replace('admin.html', 'index.html');
+            document.getElementById('campaign-url').textContent = campaignUrl;
+
+            new QRCode(document.getElementById('campaign-qr'), {
+                text: campaignUrl,
+                width: 200,
+                height: 200,
+                colorDark: "#D32F2F",
+                colorLight: "#ffffff"
+            });
+        }
+    </script>
+</body>
+
+</html>

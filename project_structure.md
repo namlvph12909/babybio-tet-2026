@@ -4,22 +4,22 @@
 - **README.md**: Project documentation and Roadmap.
 - **project_structure.md**: File structure definition.
 - **index.html**: Main entry point for the Single Page Application (SPA).
+- **admin.html**: Admin dashboard for monitoring participants & prizes.
+- **firebase.json**: Firebase Hosting & Firestore configuration.
+- **firestore.rules**: Firestore security rules.
 
 ## Source Code
 ### `css/`
 - **style.css**: Main stylesheet (Global styles, resets, variables).
-- **animations.css**: Keyframes and animation classes.
-- **responsive.css**: Media queries for mobile/tablet optimization.
 
 ### `js/`
-- **main.js**: App entry point, state management.
-- **form.js**: Form handling and validation logic.
-- **game.js**: Game loop, animation control, and prize logic.
-- **data.js**: Mock data and data storage helpers (localStorage).
+- **main.js**: App entry point, state management, game logic.
+- **firebase-config.js**: Firebase project configuration.
+- **database.js**: Database operations (Firestore / localStorage fallback).
 
 ### `assets/`
-- **images/**: Backgrounds, Character (Horse), Logos, Red Envelope images, Prize images.
-- **icons/**: UI icons.
+- **images/**: Backgrounds, Mascot (Horse), Logo, Red Envelope images.
+- **icons/**: UI icons (if any).
 
 ## Data Models
 - **User**: { name, phone, store, product, invoiceId }

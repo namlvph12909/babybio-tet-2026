@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Tickets - Allow create from client, read for admin
+    match /tickets/{ticketId} {
+      allow create: if true;  // Anyone can create a ticket
+      allow read: if true;    // For admin dashboard (should add auth in production)
+      allow update, delete: if false;  // No modifications allowed
+    }
+    
+    // Used Invoices - Allow create and read
+    match /used_invoices/{invoiceId} {
+      allow create: if true;
+      allow read: if true;
+      allow update, delete: if false;
+    }
+    
+    // Config (Prize Inventory) - Allow read, update with transaction
+    match /config/{configId} {
+      allow read: if true;
+      allow write: if true;  // For inventory deduction (should add validation in production)
+    }
+  }
+}
